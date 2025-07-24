@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Number Game</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #1a1a2e;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: #16213e;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: #e94560;
+            margin-bottom: 1.5rem;
+            font-size: clamp(1.5rem, 5vw, 2rem);
+        }
+
+        button {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: all 0.3s;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        button:hover {
+            background: #ff6b81;
+            transform: scale(1.05);
+        }
+
+        .step {
+            margin: 1.5rem 0;
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #computerNumber, #finalResult {
+            color: #0fd3ff;
+            font-weight: bold;
+            font-size: clamp(1.5rem, 6vw, 2rem);
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            button {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+                max-width: 160px;
+            }
+            
+            .step {
+                min-height: 60px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                margin-bottom: 1rem;
+            }
+            
+            button {
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔮 Magic Number Game 🔮</h1>
+        
+        <!-- Step 1: Think of a number -->
+        <div class="step" id="step1">
+            <p>Think of a number. Don't tell me!</p>
+            <button onclick="nextStep()">I'm Ready</button>
+        </div>
+        
+        <!-- Step 2: Add friend's amount -->
+        <div class="step hidden" id="step2">
+            <p>Add the same amount for your friend.</p>
+            <button onclick="nextStep()">Done</button>
+        </div>
+        
+        <!-- Step 3: Computer's number -->
+        <div class="step hidden" id="step3">
+            <p>Now add <span id="computerNumber">30</span> to the total.</p>
+            <button onclick="nextStep()">Added</button>
+        </div>
+        
+        <!-- Step 4: Halve the amount -->
+        <div class="step hidden" id="step4">
+            <p>Halve the total amount.</p>
+            <button onclick="nextStep()">Done</button>
+        </div>
+        
+        <!-- Step 5: Return friend's amount -->
+        <div class="step hidden" id="step5">
+            <p>Give your friend back their original amount.</p>
+            <button onclick="showMagic()">Reveal Magic</button>
+        </div>
+        
+        <!-- Step 6: Final reveal -->
+        <div class="step hidden" id="step6">
+            <p>✨ You're left with:</p>
+            <div id="finalResult"></div>
+            <button onclick="resetGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        let computerAddedNumber;
+        
+        function nextStep() {
+            const currentStep = document.querySelector('.step:not(.hidden)');
+            currentStep.classList.add('hidden');
+            
+            const nextStepId = parseInt(currentStep.id.replace('step', '')) + 1;
+            document.getElementById('step' + nextStepId).classList.remove('hidden');
+            
+            if (nextStepId === 3) {
+                computerAddedNumber = Math.floor(Math.random() * 51) + 10; // 10-60
+                document.getElementById('computerNumber').textContent = computerAddedNumber;
+            }
+        }
+        
+        function showMagic() {
+            document.getElementById('step5').classList.add('hidden');
+            document.getElementById('finalResult').textContent = computerAddedNumber / 2;
+            document.getElementById('step6').classList.remove('hidden');
+        }
+        
+        function resetGame() {
+            document.getElementById('step6').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
